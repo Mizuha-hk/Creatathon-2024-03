@@ -82,16 +82,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="UI\Pages\FlyoutMenuPage.xaml">
+	  <MauiXaml Update="UI\Views\HistoryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="UI\Pages\Models\HistoryPage.xaml">
+	  <MauiXaml Update="UI\Views\SettingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="UI\Pages\Models\SettingsPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="UI\Pages\TranslationPage.xaml">
+	  <MauiXaml Update="UI\Views\TranslationPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
