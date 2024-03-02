@@ -4,12 +4,30 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:TranslatorMobile"
-    Shell.FlyoutBehavior="Disabled"
+    xmlns:views="clr-namespace:TranslatorMobile.UI.Views"
+    Shell.FlyoutBehavior="Flyout"
+    FlyoutHeaderBehavior="CollapseOnScroll"
     Title="TranslatorMobile">
-
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
+    
+    <FlyoutItem
+        Title="Translation"
+        Icon="language.png">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate views:TranslationPage}"/>
+        </Tab>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="History"
+        Icon="time_past.png">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate views:HistoryPage}"/>
+        </Tab>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Settings"
+        Icon="settings.png">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate views:SettingPage}" />
+        </Tab>
+    </FlyoutItem>
 </Shell>
