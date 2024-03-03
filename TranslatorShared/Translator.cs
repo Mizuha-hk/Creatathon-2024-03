@@ -32,7 +32,7 @@ public class Translator
         _speechTranslationConfig.SetProperty(PropertyId.SpeechServiceConnection_TranslationVoice, "de-DE-Hedda");
     }
 
-    public async Task MultiLingualTranslation(TranslationRecognizerWorkerBase worker)
+    public async Task MultiLingualTranslation(TranslationRecognizerWorkerBase worker, CancellationToken token)
     {
         if(worker is null)
         {
@@ -69,8 +69,12 @@ public class Translator
 
             await recognizer.StartContinuousRecognitionAsync().ConfigureAwait(false);
 
+            token.Register(async () =>
+            {
+                await recognizer.StopContinuousRecognitionAsync().ConfigureAwait(false);
+            });
+
             Task.WaitAny(new[] { stopTranslation.Task });
-            await recognizer.StopContinuousRecognitionAsync().ConfigureAwait(false);
         }
     }
 }
