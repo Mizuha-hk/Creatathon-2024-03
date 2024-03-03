@@ -1,9 +1,112 @@
+using TranslatorMobile.Worker;
+
 namespace TranslatorMobile.UI.Views;
 
 public partial class TranslationPage : ContentPage
 {
-	public TranslationPage()
+    public bool IsTerminalOpen { get; set; } = false;
+
+    public bool IsRecording { get; set; } = false;
+
+    private CancellationTokenSource _cts;
+
+    private string subscriptionKey = "SubscriptionKey"; 
+    private string region = "region";
+    private Uri endpointUrl => new Uri($"wss://{region}.stt.speech.microsoft.com/speech/universal/v2");
+
+    private readonly TranslationRecognizerWorker _worker;
+
+    private KeyValuePair<string, string>[] _translations =
+    {
+        new KeyValuePair<string, string>("en-US", "English"),
+        new KeyValuePair<string, string>("ja-JP", "Japanese"),
+    };
+
+    public TranslationPage(TranslationRecognizerWorker worker)
 	{
 		InitializeComponent();
+        _worker = worker;
+        BindingContext = _worker;
+
+        SourceLangPicker.SelectedIndex = 0;
+        TargetLangPicker.SelectedIndex = 1;
 	}
+
+    private async void RecordStartButton_Clicked(object sender, EventArgs e)
+    {
+        var sourceLanguage = _translations[SourceLangPicker.SelectedIndex].Key;
+        var targetLanguage = _translations[TargetLangPicker.SelectedIndex].Key;
+
+        if (!IsRecording)
+        {
+            IsRecording = true;
+            RecordStartButton.Source = "pause.png";
+
+            _cts = new CancellationTokenSource();
+
+            var translator = new Translator(endpointUrl, subscriptionKey, sourceLanguage, targetLanguage);
+
+            try
+            {
+                await translator.MultiLingualTranslation(_worker, _cts.Token);
+            }
+            catch (Exception ex)
+            {
+                _worker.LogText += $"Error: {ex.Message}\n";
+            }
+            finally
+            {
+                _cts.Cancel();
+
+                _worker.LogText += "Translation has been stopped.\n";
+
+                IsRecording = false;
+                RecordStartButton.Source = "microphone.png";
+            }
+        }
+        else
+        {
+            _cts.Cancel();
+
+            IsRecording = false;
+            RecordStartButton.Source = "microphone.png";
+        }
+    }
+
+    private void OpenTerminalButton_Clicked(object sender, EventArgs e)
+    {
+        if (IsTerminalOpen)
+        {
+            TerminalRow.Height = 0;
+            IsTerminalOpen = false;
+            OpenTerminalButton.Text = "Open Terminal";
+        }
+        else
+        {
+            TerminalRow.Height = 300;
+            IsTerminalOpen = true;
+            OpenTerminalButton.Text = "Close Terminal";
+        }
+    }
+
+    private void SourceLangPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if(SourceLangPicker.SelectedIndex == TargetLangPicker.SelectedIndex)
+        {
+            TargetLangPicker.SelectedIndex = (TargetLangPicker.SelectedIndex + 1) % _translations.Length;
+        } 
+    }
+
+    private void TargetLangPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if(TargetLangPicker.SelectedIndex == SourceLangPicker.SelectedIndex)
+        {
+            SourceLangPicker.SelectedIndex = (SourceLangPicker.SelectedIndex + 1) % _translations.Length;
+        }
+    }
+
+    private void ClearTerminalButton_Clicked(object sender, EventArgs e)
+    {
+        _worker.LogText = string.Empty;
+    }
 }

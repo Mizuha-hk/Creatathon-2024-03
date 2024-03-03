@@ -57,10 +57,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\arrow_small_right.png" />
 	  <None Remove="Resources\Images\github.png" />
 	  <None Remove="Resources\Images\language.png" />
 	  <None Remove="Resources\Images\menu_burger.png" />
 	  <None Remove="Resources\Images\microphone.png" />
+	  <None Remove="Resources\Images\pause.png" />
+	  <None Remove="Resources\Images\play.png" />
 	  <None Remove="Resources\Images\settings.png" />
 	  <None Remove="Resources\Images\square_terminal.png" />
 	  <None Remove="Resources\Images\time_past.png" />
@@ -78,10 +81,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="UI\Controls\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <MauiXaml Update="UI\Views\HistoryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -91,6 +90,10 @@
 	  <MauiXaml Update="UI\Views\TranslationPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="UI\Controls\" />
 	</ItemGroup>
 
 </Project>

@@ -2,11 +2,157 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TranslatorMobile.UI.Views.TranslationPage"
-             Title="TranslationPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Translation">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackLayout
+            WidthRequest="600"
+            Grid.Row="0"
+            HorizontalOptions="CenterAndExpand"
+            Orientation="Horizontal">
+
+            <Picker 
+                x:Name="SourceLangPicker"
+                Title="Source Language"
+                SelectedIndex="0"
+                SelectedIndexChanged="SourceLangPicker_SelectedIndexChanged">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>English</x:String>
+                        <x:String>Japanese</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <Image
+                Margin="16, 8"
+                Source="arrow_small_right.png"/>
+
+            <Picker
+                x:Name="TargetLangPicker"
+                Title="Target Language"
+                SelectedIndex="0"
+                SelectedIndexChanged="TargetLangPicker_SelectedIndexChanged">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>English</x:String>
+                        <x:String>Japanese</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <ImageButton
+                x:Name="RecordStartButton"
+                Margin="32, 8"
+                CornerRadius="4"
+                BackgroundColor="{StaticResource PrimaryDark}"
+                Source="microphone.png"
+                Clicked="RecordStartButton_Clicked"/>
+        </StackLayout>
+
+        <Grid 
+            WidthRequest="600"
+            Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Label
+                Grid.Row="0"
+                Text="Recognized Text"
+                HorizontalOptions="Start"
+                Margin="8, 0"
+                VerticalOptions="Center"/>
+
+            <Editor
+                Grid.Row="1"
+                x:Name="RecognizedTextBox"
+                Margin="10"
+                FontSize="Small"
+                Placeholder="Recognized Text"
+                Text="{Binding RecognizedText}"
+                IsReadOnly="True"/> 
+        </Grid>
+
+        <Grid
+            WidthRequest="600"
+            Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Label
+                Grid.Row="0"
+                Text="Translated Text"
+                HorizontalOptions="Start"
+                Margin="8, 0"
+                VerticalOptions="Center"/>
+            
+            <Editor
+                x:Name="TranslatedTextBox"
+                Grid.Row="1"
+                Margin="10"
+                FontSize="Small"
+                Placeholder="Translated Text"
+                Text="{Binding TranslatedText}"
+                IsReadOnly="True"/>
+        </Grid>
+
+        <Grid 
+            Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="36" />
+                <RowDefinition
+                    x:Name="TerminalRow"
+                    Height="300" />
+            </Grid.RowDefinitions>
+
+            <StackLayout
+                Background="{StaticResource Primary}"
+                Grid.Row="0"
+                Orientation="Horizontal">
+                <Label
+                    Text="Terminal"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"
+                    Margin="8, 0"/>
+                <Button
+                    x:Name="ClearTerminalButton"
+                    Text="Clear"
+                    Margin="4, 2"
+                    FontSize="Caption"
+                    MinimumHeightRequest="20"
+                    HeightRequest="32"
+                    Clicked="ClearTerminalButton_Clicked"/>
+                <Button
+                    x:Name="OpenTerminalButton"
+                    Text="Open Terminal"
+                    Margin="4, 2"
+                    FontSize="Caption"
+                    MinimumHeightRequest="20"
+                    HeightRequest="32"
+                    Clicked="OpenTerminalButton_Clicked"/>
+            </StackLayout>
+            
+            <ScrollView
+                Grid.Row="1"
+                >
+                <Editor
+                    x:Name="TerminalTextBox"
+                    Margin="0"
+                    MinimumHeightRequest="0"
+                    Text="{Binding LogText}"
+                    MaximumHeightRequest="280"
+                    IsReadOnly="True"/>
+            </ScrollView>
+        </Grid>
+    </Grid>
 </ContentPage>
