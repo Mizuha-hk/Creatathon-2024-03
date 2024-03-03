@@ -1,29 +1,78 @@
-﻿namespace TranslatorMobile.Worker;
+﻿using System.ComponentModel;
 
-public class TranslationRecognizerWorker : TranslationRecognizerWorkerBase
+namespace TranslatorMobile.Worker;
+
+public class TranslationRecognizerWorker : TranslationRecognizerWorkerBase, INotifyPropertyChanged
 {
-    public string RecognizedText { get; private set; } = string.Empty;
+    private string _recognizedText = string.Empty;
+    public string RecognizedText 
+    {
+        get => _recognizedText;
+        set
+        {
+            if(_recognizedText != value)
+            {
+                _recognizedText = value;
+                OnPropertyChanged(nameof(RecognizedText));
+            }
+        }
+    }
 
-    public string TranslatedText { get; private set; } = string.Empty;
+    private string _translatedText = string.Empty;
+    public string TranslatedText 
+    { 
+        get => _translatedText;
+        set
+        {
+            if(_translatedText != value)
+            {
+                _translatedText = value;
+                OnPropertyChanged(nameof(TranslatedText));
+            }
+        }
+    }
 
-    public string LogText { get; private set; } = string.Empty;
+    private string _logText = string.Empty;
+    public string LogText 
+    {
+        get => _logText;
+        set
+        {
+            if(_logText != value)
+            {
+                _logText = value;
+                OnPropertyChanged(nameof(LogText));
+            }
+        } 
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 
     public override void OnRecognizing(TranslationRecognitionEventArgs e)
     {
-        RecognizedText = "...";
-        TranslatedText = "...";
-        LogText = "...";
+        LogText += "...";
     }
 
     public override void OnRecognized(TranslationRecognitionEventArgs e)
     {
-        LogText = "\n\n";
+        LogText += "\n\n";
 
         var result = e.Result;
         if(result.Reason == ResultReason.TranslatedSpeech)
         {
             LogText += $"TRANSLATED: {result.Text} \n";
-            TranslatedText = result.Text;
+            RecognizedText = result.Text;
+
+            foreach (var element in result.Translations)
+            {
+                LogText += $"TRANSLATED: {element.Key} -> {element.Value}\n";
+                TranslatedText = element.Value;
+            }
             //TODO: ファイル出力処理を追加する
         }
         else if(result.Reason == ResultReason.RecognizedSpeech)
