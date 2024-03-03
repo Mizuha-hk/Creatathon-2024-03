@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using TranslatorMobile.UI.Views;
 using TranslatorMobile.Worker;
 
 namespace TranslatorMobile
@@ -17,6 +18,7 @@ namespace TranslatorMobile
                 });
 
             builder.Services.AddSingleton<TranslationRecognizerWorker>();
+            builder.Services.AddSingleton<TranslationPage>();
 
 #if DEBUG
     		builder.Logging.AddDebug();
