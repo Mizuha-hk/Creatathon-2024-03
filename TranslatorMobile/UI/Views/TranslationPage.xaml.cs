@@ -10,10 +10,6 @@ public partial class TranslationPage : ContentPage
 
     private CancellationTokenSource _cts;
 
-    private string subscriptionKey = "SubscriptionKey"; 
-    private string region = "region";
-    private Uri endpointUrl => new Uri($"wss://{region}.stt.speech.microsoft.com/speech/universal/v2");
-
     private readonly TranslationRecognizerWorker _worker;
 
     private KeyValuePair<string, string>[] _translations =
@@ -36,6 +32,10 @@ public partial class TranslationPage : ContentPage
     {
         var sourceLanguage = _translations[SourceLangPicker.SelectedIndex].Key;
         var targetLanguage = _translations[TargetLangPicker.SelectedIndex].Key;
+
+        var subscriptionKey = await SecureStorage.Default.GetAsync("SubscriptionKey");
+        var region = await SecureStorage.Default.GetAsync("Region");
+        var endpointUrl = new Uri($"wss://{region}.stt.speech.microsoft.com/speech/universal/v2");
 
         if (!IsRecording)
         {
