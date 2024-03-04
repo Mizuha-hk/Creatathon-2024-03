@@ -28,6 +28,25 @@ public partial class TranslationPage : ContentPage
         TargetLangPicker.SelectedIndex = 1;
 	}
 
+    private async Task<PermissionStatus> CheckAndRequestMicrophonePermission()
+    {
+        PermissionStatus status = await Permissions.CheckStatusAsync<Permissions.Microphone>();
+
+        if(status == PermissionStatus.Granted)
+        {
+            return status;
+        }
+
+        status = await Permissions.RequestAsync<Permissions.Microphone>();
+
+        return status;
+    }
+
+    private async void ContentPage_Loaded(object sender, EventArgs e)
+    {
+        await CheckAndRequestMicrophonePermission();
+    }
+
     private async void RecordStartButton_Clicked(object sender, EventArgs e)
     {
         var sourceLanguage = _translations[SourceLangPicker.SelectedIndex].Key;
