@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TranslatorMobile.UI.Views.TranslationPage"
-             Title="Translation">
+             Title="Translation"
+             Loaded="ContentPage_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -12,7 +13,7 @@
         </Grid.RowDefinitions>
 
         <StackLayout
-            WidthRequest="600"
+            WidthRequest="340"
             Grid.Row="0"
             HorizontalOptions="CenterAndExpand"
             Orientation="Horizontal">
@@ -31,7 +32,7 @@
             </Picker>
 
             <Image
-                Margin="16, 8"
+                Margin="8, 8"
                 Source="arrow_small_right.png"/>
 
             <Picker
@@ -49,7 +50,7 @@
 
             <ImageButton
                 x:Name="RecordStartButton"
-                Margin="32, 8"
+                Margin="16, 8"
                 CornerRadius="4"
                 BackgroundColor="{StaticResource PrimaryDark}"
                 Source="microphone.png"
@@ -57,7 +58,7 @@
         </StackLayout>
 
         <Grid 
-            WidthRequest="600"
+            WidthRequest="340"
             Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
@@ -82,7 +83,7 @@
         </Grid>
 
         <Grid
-            WidthRequest="600"
+            WidthRequest="340"
             Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
