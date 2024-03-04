@@ -53,7 +53,7 @@ public partial class TranslationPage : ContentPage
         var targetLanguage = _translations[TargetLangPicker.SelectedIndex].Key;
 
         var subscriptionKey = await SecureStorage.Default.GetAsync("SubscriptionKey");
-        var region = await SecureStorage.Default.GetAsync("Region");
+        var region = await SecureStorage.Default.GetAsync("Region") ?? "japaneast";
         var endpointUrl = new Uri($"wss://{region}.stt.speech.microsoft.com/speech/universal/v2");
 
         if (!IsRecording)
